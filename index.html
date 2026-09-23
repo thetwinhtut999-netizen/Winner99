@@ -59,11 +59,12 @@
         .winner-info p { font-size: 14px; color: var(--text-muted); }
         .badge { display: inline-block; font-size: 11px; padding: 2px 8px; background: rgba(245, 158, 11, 0.2); color: var(--gold-secondary); border-radius: 20px; margin-top: 5px; font-weight: bold; }
 
+        /* Dropdown Style for 4th prize and above */
         .dropdown-container { border: 1px solid var(--border-color); border-radius: 12px; background: var(--card-bg); overflow: hidden; margin-bottom: 15px; }
         .dropdown-header { width: 100%; background: rgba(245, 158, 11, 0.1); border: none; padding: 15px 20px; text-align: left; font-size: 17px; color: var(--gold-secondary); font-weight: bold; cursor: pointer; display: flex; justify-content: space-between; align-items: center; transition: background 0.3s; }
         .dropdown-header:hover { background: rgba(245, 158, 11, 0.2); }
         .dropdown-content { max-height: 0; overflow: hidden; transition: max-height 0.4s ease-out; padding: 0 20px; }
-        .dropdown-content.open { max-height: 1000px; padding: 15px 20px 20px 20px; }
+        .dropdown-content.open { max-height: 2000px; padding: 15px 20px 20px 20px; }
         .arrow { transition: transform 0.3s; font-size: 14px; }
         .dropdown-header.active .arrow { transform: rotate(180deg); }
 
@@ -74,7 +75,8 @@
 
     <div class="container">
         <div class="header">
-            <img src="logo.png" alt="Logo" class="logo-img">
+            <!-- ကိုယ့်ရဲ့ Logo ပုံလင့်ခ် (သို့မဟုတ် logo.png) ထည့်ပါ -->
+            <img src="https://i.imgur.com/7b2Wb1c.png" alt="Logo" class="logo-img" id="logoImg">
             <h1>I Phone Duo နှင့် I Phone 18 Pro Max ကံထူးရှင်များ</h1>
         </div>
 
@@ -88,54 +90,13 @@
     </div>
 
     <script>
-        // Google Sheet Publish to Web (CSV) Link ကို ဤနေရာတွင် ထည့်ပါ
-        const csvUrl = "https://docs.google.com/spreadsheets/d/e/2PACX-1vSpDRjE8xzUmVUlvfepLRnIVc61jeHQX7dN5efBB3nEf9S8zldX9Q5QbTH0BJEV6D98A86fuymLDY3I/pub?output=csv"; 
-
         let allWinners = [];
 
         window.onload = function() {
-            fetch(csvUrl)
-                .then(response => response.text())
-                .then(text => parseCSV(text))
-                .catch(error => {
-                    console.error('Error:', error);
-                    document.getElementById('winners-container').innerHTML = '<p style="text-align:center; color:#ef4444;">ဒေတာရယူရာတွင် ချိတ်ဆက်မှု အဆင်မပြေပါ။</p>';
-                });
+            google.script.run.withSuccessHandler(renderWinners).getWinnerData();
         };
 
-        function parseCSV(text) {
-            let lines = text.split("\n");
-            let data = [];
-            let currentPrize = "1st Prize";
-
-            for (let i = 0; i < lines.length; i++) {
-                let line = lines[i].trim();
-                if (line === "") continue;
-
-                let cols = line.split(",").map(val => val.replace(/^"|"$/g, '').trim());
-                let colA = cols[0] || "";
-                let colB = cols[1] || "";
-                let colC = cols[2] || "";
-
-                // ဆုခေါင်းစဉ် ခွဲခြားခြင်း (ဥပမာ 1st Prize, 2nd Prize စသည်ဖြင့်)
-                if (colB === "" && colC === "" && colA !== "") {
-                    currentPrize = colA;
-                } 
-                // ဇယားခေါင်းစဉ်တန်း (စဥ်၊ အမျိုးအမည်၊ မန်ဘာ) များကို ကျော်လွှတ်ရန်
-                else if (colA === "စဥ်" || colB === "အမျိုးအမည်" || colB === "မန်ဘာ") {
-                    continue;
-                }
-                // ကံထူးရှင် အချက်အလက်များ
-                else if (colA !== "" && colB !== "") {
-                    data.push({
-                        prizeCategory: currentPrize,
-                        indexNo: colA,
-                        prizeName: colB,
-                        memberName: colC
-                    });
-                }
-            }
-
+        function renderWinners(data) {
             allWinners = data;
             displayWinners(data);
         }
@@ -155,13 +116,14 @@
             });
 
             let html = '';
+            let catKeys = Object.keys(grouped);
 
-            for (let cat in grouped) {
+            catKeys.forEach((cat, catIndex) => {
                 let catLower = cat.toLowerCase();
-                // 4th Prize နှင့်အထက်များကို Dropdown ပုံစံသတ်မှတ်ရန်
-                let isDropdown = catLower.includes("4th") || catLower.includes("5th") || catLower.includes("6th") || (!catLower.includes("1st") && !catLower.includes("2nd") && !catLower.includes("3rd"));
+                // 4th Prize နှင့် အထက်များကို Dropdown ပုံစံသတ်မှတ်ခြင်း
+                let isDropdown = catIndex >= 3 || catLower.includes("4th") || catLower.includes("5th") || catLower.includes("6th");
 
-                if (isDropdown && Object.keys(grouped).indexOf(cat) >= 3) {
+                if (isDropdown) {
                     html += `
                         <div class="dropdown-container">
                             <button class="dropdown-header" onclick="toggleDropdown(this)">
@@ -174,7 +136,7 @@
                     grouped[cat].forEach(winner => {
                         html += `
                             <div class="winner-card">
-                                <img src="cash.png" alt="Prize" class="prize-img">
+                                <img src="https://i.imgur.com/8Qp2Z5z.png" alt="Prize" class="prize-img" onerror="this.src='https://via.placeholder.com/60/111827/f59e0b?text=Cash'">
                                 <div class="winner-info">
                                     <h3>${winner.prizeName}</h3>
                                     <p>မန်ဘာ / ID: ${winner.memberName}</p>
@@ -190,16 +152,16 @@
                                 <div class="winners-grid">`;
                     
                     grouped[cat].forEach((winner, index) => {
-                        let imgFile = "cash.png";
+                        let imgFile = "https://i.imgur.com/8Qp2Z5z.png"; // Default Cash/Prize icon
                         if (catLower.includes("1st")) {
-                            imgFile = "iphone_duo.png";
+                            imgFile = "https://i.imgur.com/7b2Wb1c.png"; // iPhone Duo icon placeholder
                         } else if (catLower.includes("2nd")) {
-                            imgFile = (index === 0) ? "iphone_18_gold.png" : "iphone_18_silver.png";
+                            imgFile = index === 0 ? "https://i.imgur.com/7b2Wb1c.png" : "https://i.imgur.com/7b2Wb1c.png"; // iPhone 18 Pro Max icon
                         }
 
                         html += `
                             <div class="winner-card">
-                                <img src="${imgFile}" alt="Prize" class="prize-img">
+                                <img src="${imgFile}" alt="Prize" class="prize-img" onerror="this.src='https://via.placeholder.com/60/111827/f59e0b?text=Prize'">
                                 <div class="winner-info">
                                     <h3>${winner.prizeName}</h3>
                                     <p>မန်ဘာ / ID: ${winner.memberName}</p>
@@ -211,7 +173,7 @@
 
                     html += `</div></div>`;
                 }
-            }
+            });
 
             container.innerHTML = html;
         }
