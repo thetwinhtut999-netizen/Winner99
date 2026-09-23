@@ -3,129 +3,88 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>I Phone Duo & I Phone 18 Pro Max ကံထူးရှင်များ</title>
+    <title>I Phone Duo နှင့် I Phone 18 Pro Max ကံထူးရှင်များ</title>
     <link href="https://fonts.googleapis.com/css2?family=Pyidaungsu:wght@400;700&display=swap" rel="stylesheet">
     <style>
-        body {
-            background-color: #0d1117;
-            color: #ffffff;
-            font-family: 'Pyidaungsu', sans-serif;
-            margin: 0;
-            padding: 20px;
+        :root {
+            --bg-color: #0b0f19;
+            --card-bg: rgba(17, 24, 39, 0.85);
+            --gold-primary: #f59e0b;
+            --gold-secondary: #fbbf24;
+            --text-main: #f3f4f6;
+            --text-muted: #9ca3af;
+            --border-color: rgba(245, 158, 11, 0.3);
         }
-        .container {
-            max-width: 900px;
-            margin: 0 auto;
-            text-align: center;
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Pyidaungsu', sans-serif; }
+        body { background-color: var(--bg-color); background-image: radial-gradient(circle at 50% 0%, #1e1b4b 0%, #0b0f19 70%); color: var(--text-main); min-height: 100vh; padding: 20px; }
+        .container { max-width: 900px; margin: 0 auto; padding: 20px; }
+        
+        .header { text-align: center; margin-bottom: 30px; padding: 20px; border-bottom: 2px solid var(--border-color); }
+        .logo-img { width: 90px; height: 90px; border-radius: 50%; object-fit: cover; border: 2px solid var(--gold-primary); box-shadow: 0 0 20px rgba(245, 158, 11, 0.4); margin-bottom: 15px; }
+        .header h1 { font-size: 24px; font-weight: 700; background: linear-gradient(135deg, #f3f4f6 0%, var(--gold-secondary) 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; text-transform: uppercase; }
+
+        .search-box { margin-bottom: 30px; text-align: center; }
+        .search-box input { width: 100%; max-width: 400px; padding: 12px 20px; border-radius: 25px; border: 1px solid var(--gold-primary); background-color: #111827; color: #fff; font-size: 15px; outline: none; text-align: center; }
+
+        .prize-section { margin-bottom: 35px; }
+        .section-title { font-size: 18px; color: var(--gold-secondary); margin: 25px 0 15px 0; border-left: 4px solid var(--gold-primary); padding-left: 10px; text-transform: uppercase; font-weight: bold; }
+        
+        .winners-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 15px; }
+        
+        .winner-card { 
+            background: var(--card-bg); 
+            backdrop-filter: blur(10px); 
+            border: 1px solid var(--border-color); 
+            border-radius: 12px; 
+            padding: 18px; 
+            display: flex; 
+            align-items: center; 
+            gap: 15px; 
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.4);
+            transition: transform 0.3s ease;
         }
-        .logo {
-            width: 80px;
-            height: 80px;
-            border-radius: 50%;
-            margin-bottom: 10px;
-            border: 2px solid #d4af37;
+        .winner-card:hover { transform: translateY(-3px); border-color: var(--gold-secondary); }
+
+        .prize-img { 
+            width: 65px; 
+            height: 65px; 
+            object-fit: contain; 
+            border-radius: 8px; 
+            background: rgba(255, 255, 255, 0.05); 
+            padding: 5px; 
+            border: 1px solid rgba(255, 255, 255, 0.1);
         }
-        h1 {
-            background: linear-gradient(45deg, #bf953f, #fc6, #fbf5b7, #f7ef8a);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            font-size: 26px;
-            margin-bottom: 25px;
-        }
-        .search-box {
-            margin-bottom: 30px;
-        }
-        .search-box input {
-            width: 100%;
-            max-width: 400px;
-            padding: 12px 20px;
-            border-radius: 25px;
-            border: 1px solid #d4af37;
-            background-color: #161b22;
-            color: #fff;
-            font-size: 16px;
-            outline: none;
-            text-align: center;
-        }
-        .prize-section {
-            margin-bottom: 30px;
-            text-align: left;
-        }
-        .prize-title {
-            color: #d4af37;
-            font-size: 20px;
-            border-bottom: 1px solid #30363d;
-            padding-bottom: 8px;
-            margin-bottom: 15px;
-        }
-        .card-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
-            gap: 15px;
-        }
-        .card {
-            background: #161b22;
-            border: 1px solid #30363d;
-            border-radius: 12px;
-            padding: 20px;
-            box-shadow: 0 4px 12px rgba(0,0,0,0.3);
-            transition: transform 0.2s;
-        }
-        .card:hover {
-            transform: translateY(-3px);
-            border-color: #d4af37;
-        }
-        .card-prize {
-            font-size: 16px;
-            font-weight: bold;
-            color: #f7ef8a;
-            margin-bottom: 8px;
-        }
-        .card-user {
-            font-size: 15px;
-            color: #c9d1d9;
-        }
+
+        .winner-info h3 { font-size: 16px; color: var(--text-main); margin-bottom: 4px; font-weight: bold; }
+        .winner-info p { font-size: 14px; color: var(--text-muted); }
+        .badge { display: inline-block; font-size: 11px; padding: 2px 8px; background: rgba(245, 158, 11, 0.2); color: var(--gold-secondary); border-radius: 20px; margin-top: 6px; font-weight: bold; }
+        .loading { text-align: center; color: var(--gold-secondary); font-size: 16px; margin-top: 40px; }
     </style>
 </head>
 <body>
 
     <div class="container">
-        <!-- Logo -->
-        <img src="logo.png" alt="GKK99 Logo" class="logo" id="brandLogo">
-        <h1>I Phone Duo နှင့် I Phone 18 Pro Max ကံထူးရှင်များ</h1>
+        <div class="header">
+            <img src="logo.png" alt="Logo" class="logo-img">
+            <h1>I Phone Duo နှင့် I Phone 18 Pro Max ကံထူးရှင်များ</h1>
+        </div>
 
-        <!-- Search Bar -->
         <div class="search-box">
             <input type="text" id="searchInput" placeholder="နာမည် သို့မဟုတ် ID ဖြင့် ရှာရန်..." onkeyup="filterWinners()">
         </div>
 
-        <!-- Dynamic Cards Container -->
-        <div id="winnersContainer">
-            <p style="text-align: center; color: #8b949e;">စာရင်းများကို ဆွဲထုတ်နေပါသည်...</p>
+        <div id="winners-container">
+            <div class="loading">ကံထူးရှင်စာရင်းများကို ရယူနေပါသည်...</div>
         </div>
     </div>
 
     <script>
-        // Google Sheet ကို CSV ပုံစံဖြင့် တိုက်ရိုက်ဖတ်မည့် Link (သင့် Sheet ရဲ့ Published link ကို ထည့်ထားသည်)
-        const SHEET_CSV_URL = "https://docs.google.com/spreadsheets/d/e/2PACX-1vSpDRjE8xzUmVUlvfepLRnIVc61jeHQX7dN5efBB3nEf9S8zldX9Q5QbTH0BJEV6D98A86fuymLDY3I/pub?output=csv";
-        
+        // Google Sheet Publish to Web (CSV) Link ကို ဒီနေရာမှာ ထည့်ပါ
+        const csvUrl = "https://docs.google.com/spreadsheets/d/e/2PACX-1vQ.../pub?output=csv"; 
+
         let allWinners = [];
 
         window.onload = function() {
-            // Google Sheet ကို Publish လုပ်ထားသော CSV link ဖြင့် တိုက်ရိုက်ဖတ်မည်
-            // အကယ်၍ Sheet Link အစား Google Apps Script သုံးလိုပါက အောက်ပါလိုင်းကို ပြင်သုံးနိုင်သည်
-            fetchData();
-        };
-
-        function fetchData() {
-            // Google Sheet ကို Publish to Web (CSV) လုပ်ထားသော Link ထည့်ရန် သို့မဟုတ် API သုံးရန်
-            // ဒီနေရာတွင် Demo အနေဖြင့် ယာယီဒေတာ သို့မဟုတ် CSV fetch လုပ်ရန် ဖွဲ့စည်းပေးထားသည်
-            // အလွယ်ဆုံးအနေဖြင့် Google Sheet ကို File -> Share -> Publish to web (CSV) လုပ်ပြီး ယူနိုင်သည်
-            
-            // သင့်လက်ရှိ Google Sheet ID ကို အောက်ပါလင့်ခ်ထဲ ထည့်ပေးရပါမယ် (သို့မဟုတ် အောက်ပါ နမူနာအတိုင်း)
-            const csvUrl = "https://docs.google.com/spreadsheets/d/e/2PACX-1vQ.../pub?output=csv"; // သင့် Sheet CSV Link ထည့်ရန်
-            
-            // အကယ်၍ CSV Link မရှိသေးပါက Google Sheet ကို Publish to Web (CSV) လုပ်ပေးပါရန်
             fetch(csvUrl)
                 .then(response => response.text())
                 .then(text => {
@@ -133,65 +92,84 @@
                 })
                 .catch(error => {
                     console.error('Error:', error);
-                    // အကယ်၍ ချိတ်ဆက်ရန် အခက်အခဲရှိပါက Test Data ပြရန် သို့မဟုတ် အသိပေးရန်
-                    document.getElementById('winnersContainer').innerHTML = `
-                        <div style="background: #161b22; padding: 20px; border-radius: 10px; border: 1px solid #d4af37;">
-                            <p style="color: #f7ef8a; margin-bottom: 10px;"><b>⚠️ Google Sheet ချိတ်ဆက်ရန် လိုအပ်ချက်:</b></p>
-                            <p style="color: #c9d1d9; font-size: 14px; text-align: left;">
-                                ၁။ Google Sheet ထဲသွားပါ。<br>
-                                ၂။ <b>File > Share > Publish to web</b> ကို နှိပ်ပါ။<br>
-                                ၃။ Link အစား <b>Comma-separated values (.csv)</b> ကို ရွေးပြီး Publish လုပ်ပါ။<br>
-                                ၄။ ထွက်လာတဲ့ Link ကို ကော်ပီကူးပြီး ကုဒ်ထဲက <code>csvUrl</code> မှာ ထည့်ပေးလိုက်ပါက အလိုအလျောက် ပေါ်လာပါမည်။
-                            </p>
-                        </div>`;
+                    document.getElementById('winners-container').innerHTML = '<p style="text-align:center; color:#ef4444;">ဒေတာရယူရာတွင် ချိတ်ဆက်မှု အဆင်မပြေပါ။ Google Sheet CSV Link ကို စစ်ဆေးပေးပါ။</p>';
                 });
-        }
+        };
 
         function parseCSV(text) {
             let lines = text.split("\n");
             let data = [];
-            for (let i = 1; i < lines.length; i++) {
-                if (lines[i].trim() === "") continue;
-                let cols = lines[i].split(",");
-                if (cols.length >= 3) {
+            let currentPrize = "Other Prizes";
+
+            for (let i = 0; i < lines.length; i++) {
+                let line = lines[i].trim();
+                if (line === "") continue;
+
+                let cols = line.split(",").map(val => val.replace(/^"|"$/g, '').trim());
+                let colA = cols[0] || "";
+                let colB = cols[1] || "";
+                let colC = cols[2] || "";
+
+                // ခေါင်းစဉ် (ဆုအမျိုးအစား) ဖြစ်နေလျှင်
+                if (colB === "" && colC === "" && colA !== "" && colA !== "စဥ်") {
+                    currentPrize = colA;
+                } 
+                // ကံထူးရှင်စာရင်းအချက်အလက် ဖြစ်နေလျှင်
+                else if (colA !== "" && colB !== "" && colB !== "အမျိုးအမည်" && colA !== "စဥ်") {
                     data.push({
-                        no: cols[0].replace(/"/g, '').trim(),
-                        prizeName: cols[1].replace(/"/g, '').trim(),
-                        memberName: cols[2].replace(/"/g, '').trim()
+                        prizeCategory: currentPrize,
+                        indexNo: colA,
+                        prizeName: colB,
+                        memberName: colC
                     });
                 }
             }
+
             allWinners = data;
-            displayData(data);
+            displayWinners(data);
         }
 
-        function displayData(data) {
-            const container = document.getElementById('winnersContainer');
+        function displayWinners(data) {
+            const container = document.getElementById('winners-container');
             if (!data || data.length === 0) {
-                container.innerHTML = '<p style="text-align: center; color: #8b949e;">ကံထူးရှင်စာရင်း မရှိသေးပါ။</p>';
+                container.innerHTML = '<p style="text-align: center; color: var(--text-muted);">ကံထူးရှင်စာရင်း မရှိသေးပါ။</p>';
                 return;
             }
 
             let grouped = {};
             data.forEach(item => {
-                let prize = item.prizeName || 'အခြားဆုများ';
-                if (!grouped[prize]) {
-                    grouped[prize] = [];
+                let cat = item.prizeCategory;
+                if (!grouped[cat]) {
+                    grouped[cat] = [];
                 }
-                grouped[prize].push(item);
+                grouped[cat].push(item);
             });
 
             let html = '';
-            for (let prize in grouped) {
+            for (let cat in grouped) {
                 html += `<div class="prize-section">
-                            <div class="prize-title">🏆 ${prize}</div>
-                            <div class="card-grid">`;
+                            <div class="section-title">🏆 ${cat}</div>
+                            <div class="winners-grid">`;
                 
-                grouped[prize].forEach(winner => {
-                    html += `<div class="card">
-                                <div class="card-prize">စဥ် - ${winner.no}</div>
-                                <div class="card-user">မန်ဘာ / ID: <b>${winner.memberName}</b></div>
-                             </div>`;
+                grouped[cat].forEach((winner, index) => {
+                    let imgFile = "cash.png";
+                    let pNameLower = (winner.prizeName || "").toLowerCase();
+                    if (pNameLower.includes("duo") || cat.toLowerCase().includes("1st")) {
+                        imgFile = "iphone_duo.png";
+                    } else if (pNameLower.includes("18") || cat.toLowerCase().includes("2nd")) {
+                        imgFile = (index === 0) ? "iphone_18_gold.png" : "iphone_18_silver.png";
+                    }
+
+                    html += `
+                        <div class="winner-card">
+                            <img src="${imgFile}" alt="Prize" class="prize-img">
+                            <div class="winner-info">
+                                <h3>${winner.prizeName}</h3>
+                                <p>မန်ဘာ / ID: ${winner.memberName}</p>
+                                <span class="badge">စဉ် - ${winner.indexNo}</span>
+                            </div>
+                        </div>
+                    `;
                 });
 
                 html += `</div></div>`;
@@ -205,9 +183,10 @@
             let filtered = allWinners.filter(item => {
                 return String(item.memberName).toLowerCase().includes(query) || 
                        String(item.prizeName).toLowerCase().includes(query) ||
-                       String(item.no).includes(query);
+                       String(item.prizeCategory).toLowerCase().includes(query) ||
+                       String(item.indexNo).toLowerCase().includes(query);
             });
-            displayData(filtered);
+            displayWinners(filtered);
         }
     </script>
 </body>
