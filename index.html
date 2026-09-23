@@ -59,7 +59,6 @@
         .winner-info p { font-size: 14px; color: var(--text-muted); }
         .badge { display: inline-block; font-size: 11px; padding: 2px 8px; background: rgba(245, 158, 11, 0.2); color: var(--gold-secondary); border-radius: 20px; margin-top: 5px; font-weight: bold; }
 
-        /* Dropdown / Accordion Style for 4th Prize and above */
         .dropdown-container { border: 1px solid var(--border-color); border-radius: 12px; background: var(--card-bg); overflow: hidden; margin-bottom: 15px; }
         .dropdown-header { width: 100%; background: rgba(245, 158, 11, 0.1); border: none; padding: 15px 20px; text-align: left; font-size: 17px; color: var(--gold-secondary); font-weight: bold; cursor: pointer; display: flex; justify-content: space-between; align-items: center; transition: background 0.3s; }
         .dropdown-header:hover { background: rgba(245, 158, 11, 0.2); }
@@ -89,7 +88,7 @@
     </div>
 
     <script>
-        // Google Sheet Publish to Web (CSV) Link 
+        // Google Sheet Publish to Web (CSV) Link ကို ဤနေရာတွင် ထည့်ပါ
         const csvUrl = "https://docs.google.com/spreadsheets/d/e/2PACX-1vQ.../pub?output=csv"; 
 
         let allWinners = [];
@@ -100,7 +99,7 @@
                 .then(text => parseCSV(text))
                 .catch(error => {
                     console.error('Error:', error);
-                    document.getElementById('winners-container').innerHTML = '<p style="text-align:center; color:#ef4444;">ဒေတာရယူရာတွင် ချိတ်ဆက်မှု အဆင်မပြေပါ။ Google Sheet CSV Link ကို စစ်ဆေးပေးပါ။</p>';
+                    document.getElementById('winners-container').innerHTML = '<p style="text-align:center; color:#ef4444;">ဒေတာရယူရာတွင် ချိတ်ဆက်မှု အဆင်မပြေပါ။</p>';
                 });
         };
 
@@ -118,10 +117,16 @@
                 let colB = cols[1] || "";
                 let colC = cols[2] || "";
 
-                if (colB === "" && colC === "" && colA !== "" && colA !== "စဥ်") {
+                // ဆုခေါင်းစဉ် ခွဲခြားခြင်း (ဥပမာ 1st Prize, 2nd Prize စသည်ဖြင့်)
+                if (colB === "" && colC === "" && colA !== "") {
                     currentPrize = colA;
                 } 
-                else if (colA !== "" && colB !== "" && colB !== "အမျိုးအမည်" && colA !== "စဥ်") {
+                // ဇယားခေါင်းစဉ်တန်း (စဥ်၊ အမျိုးအမည်၊ မန်ဘာ) များကို ကျော်လွှတ်ရန်
+                else if (colA === "စဥ်" || colB === "အမျိုးအမည်" || colB === "မန်ဘာ") {
+                    continue;
+                }
+                // ကံထူးရှင် အချက်အလက်များ
+                else if (colA !== "" && colB !== "") {
                     data.push({
                         prizeCategory: currentPrize,
                         indexNo: colA,
@@ -152,10 +157,11 @@
             let html = '';
 
             for (let cat in grouped) {
-                let isDropdown = cat.toLowerCase().includes("4th") || cat.toLowerCase().includes("5th") || cat.toLowerCase().includes("6th") || (!cat.toLowerCase().includes("1st") && !cat.toLowerCase().includes("2nd") && !cat.toLowerCase().includes("3rd") && Object.keys(grouped).indexOf(cat) >= 3);
+                let catLower = cat.toLowerCase();
+                // 4th Prize နှင့်အထက်များကို Dropdown ပုံစံသတ်မှတ်ရန်
+                let isDropdown = catLower.includes("4th") || catLower.includes("5th") || catLower.includes("6th") || (!catLower.includes("1st") && !catLower.includes("2nd") && !catLower.includes("3rd"));
 
-                if (isDropdown) {
-                    // 4th Prize နှင့် အထက်အတွက် Dropdown / Accordion ပုံစံ
+                if (isDropdown && Object.keys(grouped).indexOf(cat) >= 3) {
                     html += `
                         <div class="dropdown-container">
                             <button class="dropdown-header" onclick="toggleDropdown(this)">
@@ -179,22 +185,16 @@
 
                     html += `</div></div></div>`;
                 } else {
-                    // 1st, 2nd, 3rd Prize များအတွက် Card Grid ပုံစံ
                     html += `<div class="prize-section">
                                 <div class="section-title">🏆 ${cat}</div>
                                 <div class="winners-grid">`;
                     
                     grouped[cat].forEach((winner, index) => {
                         let imgFile = "cash.png";
-                        let catLower = cat.toLowerCase();
-                        let pNameLower = (winner.prizeName || "").toLowerCase();
-
                         if (catLower.includes("1st")) {
                             imgFile = "iphone_duo.png";
                         } else if (catLower.includes("2nd")) {
                             imgFile = (index === 0) ? "iphone_18_gold.png" : "iphone_18_silver.png";
-                        } else if (catLower.includes("3rd")) {
-                            imgFile = "cash.png";
                         }
 
                         html += `
