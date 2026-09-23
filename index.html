@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="my">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>I Phone Duo နှင့် I Phone 18 Pro Max ကံထူးရှင်များ</title>
+    <link href="https://script.google.com/macros/s/AKfycbwiGxXFbYKThU4Ld4Wn43ji54mdHsFvwE-xY1yC4pc/dev" rel="stylesheet">
+    <style>
+        :root {
+            --bg-color: #0b0f19;
+            --card-bg: rgba(17, 24, 39, 0.75);
+            --gold-primary: #f59e0b;
+            --gold-secondary: #fbbf24;
+            --text-main: #f3f4f6;
+            --text-muted: #9ca3af;
+            --border-color: rgba(245, 158, 11, 0.3);
+        }
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Pyidaungsu', sans-serif; }
+        body { background-color: var(--bg-color); background-image: radial-gradient(circle at 50% 0%, #1e1b4b 0%, #0b0f19 70%); color: var(--text-main); min-height: 100vh; padding: 20px; }
+        .container { max-width: 900px; margin: 0 auto; padding: 20px; }
+        
+        .header { text-align: center; margin-bottom: 40px; padding: 20px; border-bottom: 2px solid var(--border-color); }
+        .logo-img { width: 90px; height: 90px; border-radius: 50%; object-fit: cover; border: 2px solid var(--gold-primary); box-shadow: 0 0 20px rgba(245, 158, 11, 0.4); margin-bottom: 15px; }
+        .header h1 { font-size: 24px; font-weight: 700; background: linear-gradient(135deg, #f3f4f6 0%, var(--gold-secondary) 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; text-transform: uppercase; }
+
+        .prize-section { margin-bottom: 30px; }
+        .section-title { font-size: 18px; color: var(--gold-secondary); margin: 25px 0 15px 0; border-left: 4px solid var(--gold-primary); padding-left: 10px; text-transform: uppercase; }
+        
+        .winners-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 15px; }
+        
+        .winner-card { 
+            background: var(--card-bg); 
+            backdrop-filter: blur(10px); 
+            border: 1px solid var(--border-color); 
+            border-radius: 12px; 
+            padding: 20px; 
+            display: flex; 
+            align-items: center; 
+            gap: 15px; 
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+            transition: transform 0.3s ease;
+        }
+        .winner-card:hover { transform: translateY(-3px); border-color: var(--gold-secondary); }
+
+        .prize-img { 
+            width: 65px; 
+            height: 65px; 
+            object-fit: contain; 
+            border-radius: 8px; 
+            background: rgba(255, 255, 255, 0.05); 
+            padding: 5px; 
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .winner-info h3 { font-size: 16px; color: var(--text-main); margin-bottom: 4px; }
+        .winner-info p { font-size: 14px; color: var(--text-muted); }
+        .badge { display: inline-block; font-size: 11px; padding: 2px 8px; background: rgba(245, 158, 11, 0.2); color: var(--gold-secondary); border-radius: 20px; margin-top: 5px; font-weight: bold; }
+        .loading { text-align: center; color: var(--gold-secondary); font-size: 18px; margin-top: 30px; }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <div class="header">
+            <!-- လုပ်ငန်း Logo ပုံ -->
+            <img src="logo.png" alt="Logo" class="logo-img">
+            <h1>I Phone Duo နှင့် I Phone 18 Pro Max ကံထူးရှင်များ</h1>
+        </div>
+
+        <div id="winners-container">
+            <div class="loading">ကံထူးရှင်စာရင်းများကို ရယူနေပါသည်...</div>
+        </div>
+    </div>
+
+    <script>
+        // Google Apps Script မှ ထွက်လာသော Web App URL ကို ဤနေရာတွင် ထည့်ပါ
+        const sheetAPIUrl = "YOUR_APPS_SCRIPT_WEB_APP_URL_HERE";
+
+        fetch(sheetAPIUrl)
+            .then(response => response.json())
+            .then(data => {
+                const container = document.getElementById('winners-container');
+                container.innerHTML = ''; 
+
+                // ဆုအမျိုးအစားအလိုက် အုပ်စုဖွဲ့ခြင်း
+                let groupedData = {};
+                data.forEach(item => {
+                    let prizeName = item.prize || "Other Prizes";
+                    if (!groupedData[prizeName]) {
+                        groupedData[prizeName] = [];
+                    }
+                    groupedData[prizeName].push(item);
+                });
+
+                // ဆုအမျိုးအစားတစ်ခုချင်းစီအတွက် HTML တည်ဆောက်ခြင်း
+                for (let prize in groupedData) {
+                    let sectionHTML = `<div class="prize-section">
+                        <div class="section-title">🏆 ${prize}</div>
+                        <div class="winners-grid">`;
+                    
+                    groupedData[prize].forEach((winner, index) => {
+                        // ဆုအမျိုးအစားအလိုက် သင့်တော်မည့် ပုံသေသတ်မှတ်ချက် (သို့) အရောင်ကွဲပြားစေရန်
+                        let imgFile = "prize_default.png";
+                        if (prize.includes("1st")) {
+                            imgFile = "iphone_duo.png";
+                        } else if (prize.includes("2nd")) {
+                            // ဒုတိယဆု လူနှစ်ယောက်အတွက် အရောင်မတူသော ပုံ ၂ ပုံကို ခွဲသုံးနိုင်ပါသည်
+                            imgFile = (index === 0) ? "iphone_18_gold.png" : "iphone_18_silver.png";
+                        } else {
+                            imgFile = "cash.png"; // တတိယဆု ငွေသားပုံ စသည်ဖြင့်
+                        }
+
+                        sectionHTML += `
+                            <div class="winner-card">
+                                <img src="${imgFile}" alt="${winner.name}" class="prize-img">
+                                <div class="winner-info">
+                                    <h3>${winner.name}</h3>
+                                    <p>မန်ဘာ / ID: ${winner.id}</p>
+                                    <span class="badge">စဉ် - ${winner.index}</span>
+                                </div>
+                            </div>
+                        `;
+                    });
+
+                    sectionHTML += `</div></div>`;
+                    container.innerHTML += sectionHTML;
+                }
+            })
+            .catch(error => {
+                console.error('Error fetching data:', error);
+                container.innerHTML = '<p style="text-align:center; color:red;">ဒေတာရယူရာတွင် အမှားအယွင်းရှိခဲ့ပါသည်။</p>';
+            });
+    </script>
+
+</body>
+</html>
